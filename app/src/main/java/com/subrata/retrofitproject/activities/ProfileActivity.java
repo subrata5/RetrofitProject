@@ -1,25 +1,25 @@
 package com.subrata.retrofitproject.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.subrata.retrofitproject.R;
-import com.subrata.retrofitproject.models.User;
+import com.subrata.retrofitproject.fragments.HomeFragment;
+import com.subrata.retrofitproject.fragments.SettingsFragment;
+import com.subrata.retrofitproject.fragments.UserFragment;
 import com.subrata.retrofitproject.storage.SharedPrefManager;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
-    private TextView tv_Name;
-    private Button btn_logout;
 
     private void init() {
-        tv_Name = findViewById(R.id.tv_Name);
-        btn_logout = findViewById(R.id.btn_logout);
+
     }
 
     @Override
@@ -30,18 +30,11 @@ public class ProfileActivity extends AppCompatActivity {
         //Initiate the views
         init();
 
-        User user = SharedPrefManager.getInstance(this).getUser();
-        tv_Name.setText("Welcome "+user.getName());
+        BottomNavigationView navigationView = findViewById(R.id.navigation);
+        navigationView.setOnNavigationItemSelectedListener(this);
 
-        btn_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPrefManager.getInstance(ProfileActivity.this).clear();
-                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
+        //When activity loads display the home fragment
+        displayFragment(new HomeFragment());
     }
 
     /**
@@ -60,4 +53,44 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
     }
+
+
+    /**
+     * Display faragment depending on the user choice
+     */
+    private void displayFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.relative_container, fragment)
+                .commit();
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        Fragment fragment = null;
+
+        //When the user clicks from the buttom navigation view,
+        //change the view to the desired one
+        switch (menuItem.getItemId()) {
+            case R.id.menu_home:
+                fragment = new HomeFragment();
+                break;
+            case R.id.menu_user:
+                fragment = new UserFragment();
+                break;
+            case R.id.menu_settings:
+                fragment = new SettingsFragment();
+                break;
+        }
+
+        //check if the fragment value is null
+        if (fragment != null) {
+            displayFragment(fragment);
+        }
+
+        return false;
+    }
 }
+

@@ -2,11 +2,8 @@ package com.subrata.retrofitproject.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.content.ContextCompat;
 
 import com.subrata.retrofitproject.models.User;
-
-import java.util.ResourceBundle;
 
 public class SharedPrefManager {
 
