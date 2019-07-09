@@ -50,11 +50,12 @@ public class UserFragment extends Fragment {
             @Override
             public void onResponse(Call<UsersResponse> call, Response<UsersResponse> response) {
                 //the response if no error occurs. success, get the user and fill in the recycler-view
-                if(response.body() != null){
-                userList = response.body().getUsers();
-                userAdapter = new UserAdapter(getActivity(), userList);
-                recyclerView.setAdapter(userAdapter);}else
-                    Toast.makeText(getActivity().getApplicationContext(),"Something went wrong!", Toast.LENGTH_SHORT).show();
+                if (response.body() != null) {
+                    userList = response.body().getUsers();
+                    userAdapter = new UserAdapter(getActivity(), userList);
+                    recyclerView.setAdapter(userAdapter);
+                } else
+                    Toast.makeText(getActivity().getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -94,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Already have an account?"
-            android:textColor="@color/sign_up_box_bg"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:textSize="15dp"/>
@@ -103,9 +103,9 @@
             android:id="@+id/tv_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Click To Login"
+            android:text="Click to Login"
             android:textStyle="bold"
-            android:textColor="@color/sign_up_box_bg"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="15dp"/>
@@ -125,6 +125,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:text="Sign Up"
+
         android:textAllCaps="false"
         android:textColor="@color/sign_up_box_bg"/>
 

@@ -17,7 +17,7 @@
             android:id="@+id/textSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Log In"
+            android:text="LOG IN"
             android:textStyle="bold"
             android:textColor="@color/sign_up_box_bg"
             android:gravity="center"
@@ -26,6 +26,7 @@
 
         <LinearLayout
             android:outlineAmbientShadowColor="@color/bg_dark_shadow"
+            android:outlineSpotShadowColor="@color/bg_dark_shadow"
             android:id="@+id/linearView"
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -72,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Don't have an Account?"
-            android:textColor="@color/sign_up_box_bg"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:textSize="15dp"/>
@@ -81,9 +82,9 @@
             android:id="@+id/tv_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Click To register"
+            android:text="Click to register"
             android:textStyle="bold"
-            android:textColor="@color/sign_up_box_bg"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="15dp"/>
