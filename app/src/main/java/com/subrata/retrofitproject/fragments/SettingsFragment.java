@@ -1,11 +1,14 @@
 package com.subrata.retrofitproject.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.INotificationSideChannel;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -71,22 +74,94 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.btn_logout:
-                //Clear the value from the shared preference
-                SharedPrefManager.getInstance(getActivity()).clear();
-
-                //get the user from the current view to the login/sign-up view
-                Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-
-                //Toast for success message
-                Toast.makeText(getActivity(), "Logged out successfully", Toast.LENGTH_SHORT).show();
+                userlogout();
                 break;
 
             case R.id.btn_delete:
+                deleteUser();
                 break;
         }
 
+    }
+
+    /**
+     * Delete the user by api call.
+     */
+    private void deleteUser() {
+
+        //Show alert dialog for confirmation of deletion
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Are you sure?");
+        builder.setMessage("Delete account? This action is irreversible!");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Get the user from the saved shared preference
+                User user = SharedPrefManager.getInstance(getActivity()).getUser();
+
+                //Get the user id from the saved shared preference
+                int user_id = user.getId();
+
+                //Call the api for deleting the user
+                Call<DefaultResponse> call = RetrofitClient.getInstance().getApi()
+                        .deleteuser(user_id);
+
+                call.enqueue(new Callback<DefaultResponse>() {
+                    @Override
+                    public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+
+                        if (!response.body().isErr()) {
+                            //On user deletion success
+                            Log.e(TAG, "User deleted successfully");
+
+                            //Logout the user and clear the value from the shared preference
+                            SharedPrefManager.getInstance(getActivity()).clear();
+
+                            //take the user to login/register screen
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+
+                        //give the toast to the user
+                        Toast.makeText(getActivity().getApplicationContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                        //On user deletion failure
+                        Toast.makeText(getActivity().getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Show message that the user deletion has cancelled.
+                Toast.makeText(getActivity(), "User deletion cancelled", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
+    /**
+     * Logout the user by clearing the data of the shared preference
+     */
+    private void userlogout() {
+        //Clear the value from the shared preference
+        SharedPrefManager.getInstance(getActivity()).clear();
+
+        //get the user from the current view to the login/sign-up view
+        Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        //Toast for success message
+        Toast.makeText(getActivity(), "Logged out successfully", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -172,6 +247,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             et_school.requestFocus();
             return;
         }
+
 
         //get the existing user
         User user = SharedPrefManager.getInstance(getActivity()).getUser();
