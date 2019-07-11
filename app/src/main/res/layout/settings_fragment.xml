@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/gradient_sign_up">
 
 
     <ScrollView
@@ -25,11 +26,11 @@
                     android:layout_height="wrap_content"
                     android:text="Update Profile"
                     android:textStyle="bold"
-                    android:textColor="@color/cardview_dark_background"
                     android:gravity="center"
                     android:layout_alignBottom="@+id/linearView"
                     android:textSize="15dp"
                     android:layout_marginTop="8dp"
+                    android:textColor="@color/sign_up_box_bg"
                     />
 
                 <LinearLayout
@@ -124,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:text="Change Password"
                     android:textStyle="bold"
-                    android:textColor="@color/cardview_dark_background"
+                    android:textColor="@color/sign_up_box_bg"
                     android:gravity="center"
                     android:layout_alignBottom="@+id/linearView"
                     android:textSize="15dp"

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.subrata.retrofitproject.R;
@@ -29,6 +30,7 @@ public class UserFragment extends Fragment {
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
     private List<User> userList;
+    private ImageView img_error;
 
     @Nullable
     @Override
@@ -43,6 +45,9 @@ public class UserFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        //Initialize the error image view
+        img_error = view.findViewById(R.id.img_error);
+
 
         //Call api to get the list of user through the end point
         Call<UsersResponse> call = RetrofitClient.getInstance().getApi().getUsers();
@@ -51,17 +56,25 @@ public class UserFragment extends Fragment {
             public void onResponse(Call<UsersResponse> call, Response<UsersResponse> response) {
                 //the response if no error occurs. success, get the user and fill in the recycler-view
                 if (response.body() != null) {
+
+                    //make the error image invisible
+                    img_error.setVisibility(View.INVISIBLE);
+
+                    //update adapter
                     userList = response.body().getUsers();
                     userAdapter = new UserAdapter(getActivity(), userList);
                     recyclerView.setAdapter(userAdapter);
+
                 } else
                     Toast.makeText(getActivity().getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<UsersResponse> call, Throwable t) {
+
                 //User authentication failed.get the proper response to the user.
-                Toast.makeText(getActivity().getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                img_error.setVisibility(View.VISIBLE);
             }
         });
     }

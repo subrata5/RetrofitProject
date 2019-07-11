@@ -16,4 +16,11 @@
         android:icon="@drawable/ic_settings_black_24dp"
         android:title="@string/settings"/>
 
+    <item
+        android:id="@+id/menu_about"
+        android:icon="@drawable/ic_info"
+        android:title="@string/about"/>
+
+
+
 </menu>

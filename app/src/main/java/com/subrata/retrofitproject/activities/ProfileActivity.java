@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.subrata.retrofitproject.R;
+import com.subrata.retrofitproject.fragments.AboutFragment;
 import com.subrata.retrofitproject.fragments.HomeFragment;
 import com.subrata.retrofitproject.fragments.SettingsFragment;
 import com.subrata.retrofitproject.fragments.UserFragment;
@@ -82,6 +83,9 @@ public class ProfileActivity extends AppCompatActivity implements BottomNavigati
                 break;
             case R.id.menu_settings:
                 fragment = new SettingsFragment();
+                break;
+            case R.id.menu_about:
+                fragment = new AboutFragment();
                 break;
         }
 
